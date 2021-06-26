@@ -1,6 +1,6 @@
 properties([pipelineTriggers([githubPush()])])
 pipeline {
-    agent { label 'node1' }
+    agent { label 'master' }
       stages {
         stage("Clone Code") {
             steps {
