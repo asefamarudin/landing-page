@@ -30,7 +30,7 @@ pipeline {
             }
             steps{
                 script {
-                    sh "kubectl  set image deployment/lp-deployment  lp-deployment=$DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER} -n production"
+                    sh "kubectl  set image deployment/lp-deployment  app3=$DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER} -n production"
                 }
             }
         }
