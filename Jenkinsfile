@@ -1,4 +1,5 @@
-properties([pipelineTriggers([githubPush()])])
+env.DOCKER_REGISTRY = 'asefamarudin'
+env.DOCKER_IMAGE_NAME = 'landing-apps'
 pipeline {
     agent { label 'master' }
       stages {
@@ -12,24 +13,44 @@ pipeline {
         stage('Building Image') {
             steps{
                 script {
-                    sh "docker build . -t asefamarudin/landing-apps:${BUILD_NUMBER}"
+                    sh "docker build . -t $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER}"
                 }
             }
         }
         stage('Push Image') {
             steps{
                 script {
-                    sh "docker push asefamarudin/landing-apps:${BUILD_NUMBER}"
+                    sh "docker push $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER}"
                 }
             }
         }
-        stage('deploy') {
+        stage('deploy stg') {
+            when{
+                branch 'main'
+            }
             steps{
                 script {
-                    sh "kubectl  set image deployment/sosmed-cilsy  sosmed-cilsy=asefamarudin/landing-apps:${BUILD_NUMBER}"
+                    sh "kubectl  set image deployment/lp-deployment  sosmed-cilsy=$DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER} -n staging"
                 }
             }
         }
+        stage('remove docker image in local') {
+            when{
+                branch 'main'
+            }
+            steps{
+                script {
+                    sh "docker rmi $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:${BUILD_NUMBER}"
+                }
+            }
+        }
+        stage('clean workspace') {
+
+            steps{
+                cleanWs()
+            }
+        }
+        
      }
    
 }
