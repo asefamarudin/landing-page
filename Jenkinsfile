@@ -1,5 +1,5 @@
 env.DOCKER_REGISTRY = 'asefamarudin'
-env.DOCKER_IMAGE_NAME = 'landing-apps'
+env.DOCKER_IMAGE_NAME = 'landing-apps-prod'
 pipeline {
     agent { label 'master' }
       stages {
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('deploy stg') {
             when{
-                branch 'main'
+                branch 'prod'
             }
             steps{
                 script {
@@ -36,7 +36,7 @@ pipeline {
         }
         stage('remove docker image in local') {
             when{
-                branch 'main'
+                branch 'prod'
             }
             steps{
                 script {
