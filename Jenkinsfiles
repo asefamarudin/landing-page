@@ -1,4 +1,4 @@
-env.DOCKER_REGISTRY = 'asefamarudina'
+env.DOCKER_REGISTRY = 'd'
 env.DOCKER_IMAGE_NAME = 'landing-apps'
 pipeline {
     agent { label 'master' }
