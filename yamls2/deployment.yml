@@ -15,5 +15,5 @@ spec:
         app: landing-page
     spec:
       containers:
-      - image: asefamarudin/landing-page-sample2:2
+      - image: asefamarudin/landing-page-sample2:3
         name: landing-page
